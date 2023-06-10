@@ -10,6 +10,8 @@ import SwiftUI
 @main
 struct WeatherApp: App {
     
+    @Environment(\.scenePhase) private var scenePhase
+    
     private(set) var locationManager: LocationManager!
     private(set) var weatherRequester: WeatherRequester!
     private(set) var weatherDataManager: WeatherDataManager!
@@ -23,6 +25,22 @@ struct WeatherApp: App {
     var body: some Scene {
         WindowGroup {
             CurrentWeatherView(weatherDataManager: weatherDataManager)
+        }
+        .onChange(of: scenePhase) { newScenePhase in
+            switch newScenePhase {
+            case .active:
+                locationManager.startUpdatingLocation()
+                weatherDataManager.startUpdatingWeatherData()
+            case .background:
+                locationManager.stopUpdatingLocation()
+                #warning("store date, calculate offset when becoming active again")
+                break
+            case .inactive:
+                locationManager.stopUpdatingLocation()
+                break
+            @unknown default:
+                break
+            }
         }
     }
 }
