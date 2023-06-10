@@ -17,7 +17,7 @@ class WeatherRequester: URLRequesting {
     
     func currentWeather(for location: CLLocationCoordinate2D) async -> Result<CurrentWeatherResponseModel, WeatherRequestError> {
         
-        guard let url = URL(string: "https://api.open-meteo.com/v1/forecast?latitude=\(location.latitude)&longitude=\(location.longitude)&hourly=temperature_2m") else {
+        guard let url = URL(string: "https://api.open-meteo.com/v1/forecast?latitude=\(location.latitude)&longitude=\(location.longitude)&hourly=temperature_2m&current_weather=true") else {
             
             return .failure(.urlConstructionFailure)
         }
