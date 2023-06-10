@@ -22,7 +22,7 @@ struct WeatherApp: App {
     
     var body: some Scene {
         WindowGroup {
-            CurrentWeatherView()
+            CurrentWeatherView(weatherDataManager: weatherDataManager)
         }
     }
 }

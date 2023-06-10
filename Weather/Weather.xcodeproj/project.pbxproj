@@ -105,7 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				F4A2A16E2A34CB0400805983 /* WeatherApp.swift */,
-				F4A2A1702A34CB0400805983 /* CurrentWeatherView.swift */,
+				F4A2A1A72A34E10E00805983 /* Views */,
 				F4A2A1A62A34DFBA00805983 /* Data management */,
 				F4A2A19E2A34D96800805983 /* Network */,
 				F4A2A1722A34CB0500805983 /* Assets.xcassets */,
@@ -169,7 +169,6 @@
 		F4A2A1A72A34E10E00805983 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F4A2A1A22A34DF1500805983 /* LoadingView.swift */,
 				F4A2A1702A34CB0400805983 /* CurrentWeatherView.swift */,
 			);
 			path = Views;
