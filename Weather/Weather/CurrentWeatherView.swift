@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  CurrentWeatherView.swift
 //  Weather
 //
 //  Created by Stephan Howey on 10.06.23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct CurrentWeatherView: View {
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -21,6 +21,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        CurrentWeatherView()
     }
 }
