@@ -13,9 +13,22 @@ enum WeatherRequestError: Error {
     case urlConstructionFailure
 }
 
-class WeatherRequester: URLRequesting {
+protocol WeatherSourcing {
+    func currentWeather(for location: CLLocationCoordinate2D) async -> Result<WeatherResponseModel, WeatherRequestError>
+}
+
+class WeatherRequester {
     
-    func currentWeather(for location: CLLocationCoordinate2D) async -> Result<CurrentWeatherResponseModel, WeatherRequestError> {
+    private let urlRequester: URLRequesting
+    
+    init(urlRequester: URLRequesting) {
+        self.urlRequester = urlRequester
+    }
+}
+
+extension WeatherRequester: WeatherSourcing {
+    
+    func currentWeather(for location: CLLocationCoordinate2D) async -> Result<WeatherResponseModel, WeatherRequestError> {
         
         guard let url = URL(string: "https://api.open-meteo.com/v1/forecast?latitude=\(location.latitude)&longitude=\(location.longitude)&hourly=temperature_2m&current_weather=true") else {
             
@@ -25,7 +38,7 @@ class WeatherRequester: URLRequesting {
         let request = URLRequest(url: url)
 
         do {
-            let result: CurrentWeatherResponseModel = try await result(from: request)
+            let result: WeatherResponseModel = try await urlRequester.result(from: request)
             return .success(result)
         } catch {
             return .failure(.networkError(error))

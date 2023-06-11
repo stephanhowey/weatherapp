@@ -9,17 +9,18 @@ import SwiftUI
 
 struct CurrentWeatherView: View {
     
-    @ObservedObject var weatherDataManager: WeatherDataManager
+    @ObservedObject var viewModel: WeatherViewModel
     
     var body: some View {
-        if weatherDataManager.state == .hasData {
+        
+        if viewModel.state == .hasData {
             VStack {
                 Image(systemName: "globe")
                     .imageScale(.large)
                     .foregroundColor(.accentColor)
                 
-                if let weather = weatherDataManager.currentWeather {
-                    Text("\(weather.hourly.temperature.first!)")
+                if let weather = viewModel.currentWeather {
+                    Text("\(weather.currentWeather.temperature)")
                 }
             }
             .padding()
@@ -30,7 +31,9 @@ struct CurrentWeatherView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    
     static var previews: some View {
-        CurrentWeatherView(weatherDataManager: WeatherDataManager(locationManager: LocationManager(), requester: WeatherRequester()))
+        
+        CurrentWeatherView(viewModel: WeatherViewModel(locationManager: LocationManager(), requester: WeatherRequester(urlRequester: URLRequester())))
     }
 }

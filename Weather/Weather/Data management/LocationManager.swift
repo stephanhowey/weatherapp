@@ -9,9 +9,19 @@ import Foundation
 import CoreLocation
 import Combine
 
-class LocationManager {
+protocol LocationUpdating {
     
-    @Published var currentLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
+    var locationPublisher: Published<CLLocationCoordinate2D>.Publisher { get }
+    
+    func startUpdatingLocation()
+    func stopUpdatingLocation()
+}
+
+class LocationManager: LocationUpdating {
+    
+    var locationPublisher: Published<CLLocationCoordinate2D>.Publisher { $currentLocation }
+    
+    @Published private var currentLocation: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 53.619653, longitude: 10.079969)
     
     private let locations = [
         CLLocationCoordinate2D(latitude: 53.619653, longitude: 10.079969),
@@ -26,15 +36,15 @@ class LocationManager {
         CLLocationCoordinate2D(latitude: 53.141598, longitude: 8.242565)
     ]
     
-    private let timer = Timer.publish(every: 10.0, on: .main, in: .common)
-        .autoconnect()
+    private let timer = Timer.publish(every: 10.0, on: .main, in: .common).autoconnect()
     
     private var cancellable: AnyCancellable?
     private var currentIndex = 0
     
     func startUpdatingLocation() {
-        self.currentLocation = self.locations[currentIndex]
+        
         stopUpdatingLocation()
+        
         cancellable = timer
             .sink { seconds in
                 guard self.currentIndex < self.locations.count - 1 else {

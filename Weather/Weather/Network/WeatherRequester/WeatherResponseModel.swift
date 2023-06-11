@@ -1,5 +1,5 @@
 //
-//  CurrentWeatherResponseModel.swift
+//  WeatherResponseModel.swift
 //  Weather
 //
 //  Created by Stephan Howey on 10.06.23.
@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Welcome
-struct CurrentWeatherResponseModel: Codable {
+struct WeatherResponseModel: Codable {
     let latitude, longitude, generationtimeMS: Double
     let utcOffsetSeconds: Int
     let timezone, timezoneAbbreviation: String

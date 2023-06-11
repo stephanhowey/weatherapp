@@ -12,31 +12,34 @@ struct WeatherApp: App {
     
     @Environment(\.scenePhase) private var scenePhase
     
-    private(set) var locationManager: LocationManager!
-    private(set) var weatherRequester: WeatherRequester!
-    private(set) var weatherDataManager: WeatherDataManager!
+    private let locationManager: LocationUpdating
+    private let urlRequester: URLRequesting
+    private let weatherRequester: WeatherSourcing
+    private let weatherViewModel: WeatherViewModel
     
     init() {
         locationManager = LocationManager()
-        weatherRequester = WeatherRequester()
-        weatherDataManager = WeatherDataManager(locationManager: locationManager, requester: weatherRequester)
+        urlRequester = URLRequester()
+        weatherRequester = WeatherRequester(urlRequester: urlRequester)
+        weatherViewModel = WeatherViewModel(locationManager: locationManager, requester: weatherRequester)
     }
     
     var body: some Scene {
         WindowGroup {
-            CurrentWeatherView(weatherDataManager: weatherDataManager)
+            CurrentWeatherView(viewModel: weatherViewModel)
         }
         .onChange(of: scenePhase) { newScenePhase in
             switch newScenePhase {
             case .active:
-                locationManager.startUpdatingLocation()
-                weatherDataManager.startUpdatingWeatherData()
+//                locationManager.startUpdatingLocation()
+                weatherViewModel.startUpdatingWeatherData()
+                break
             case .background:
-                locationManager.stopUpdatingLocation()
+//                locationManager.stopUpdatingLocation()
                 #warning("store date, calculate offset when becoming active again")
                 break
             case .inactive:
-                locationManager.stopUpdatingLocation()
+//                locationManager.stopUpdatingLocation()
                 break
             @unknown default:
                 break
