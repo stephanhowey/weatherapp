@@ -20,24 +20,17 @@ final class WeatherViewModelTests: XCTestCase {
 
     override func tearDownWithError() throws {
         viewModel = nil
+        cancellables.forEach { $0.cancel() }
+        cancellables = []
     }
 
-    func testLoadingStateChange() throws {
-        
-        guard viewModel.state == .loading else {
-            XCTFail("Unexpected initial state")
-            return
-        }
+    func test1Delivery() throws {
         
         let stateChangeExpectation = expectation(description: "state shall change on first weather update")
         
-        viewModel.$currentWeather
+        viewModel.$temperatureText
             .compactMap { $0 }
-            .sink { weatherModel in
-                guard case .hasData = self.viewModel.state else {
-                    XCTFail("Unexpected state")
-                    return
-                }
+            .sink { _ in
                 stateChangeExpectation.fulfill()
             }
             .store(in: &cancellables)
@@ -51,8 +44,7 @@ final class WeatherViewModelTests: XCTestCase {
         
         let expect2WeatherUpdate = expectation(description: "2 weather updates are expected within 11sec")
         
-        viewModel.$currentWeather
-            .compactMap { $0 }
+        viewModel.$temperatureSmiley
             .collect(2)
             .sink { _ in
                 expect2WeatherUpdate.fulfill()

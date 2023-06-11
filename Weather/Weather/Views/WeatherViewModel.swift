@@ -11,13 +11,34 @@ import Combine
 
 class WeatherViewModel: ObservableObject {
     
-    enum LoadingState {
-        case loading
-        case hasData
-    }
+    @Published var temperatureSmiley: String = ""
+    @Published var temperatureText: String = "Loading ..."
     
-    @Published var currentWeather: WeatherResponseModel?
-    @Published var state: LoadingState = .loading
+    @Published private var currentWeather: WeatherResponseModel? {
+        didSet {
+            guard let weather = currentWeather else { return }
+            
+            let temperature = weather.currentWeather.temperature
+            temperatureText = "\(temperature) \(weather.hourlyUnits.temperature)"
+            
+            switch temperature {
+            case _ where temperature < 1.0:
+                temperatureSmiley = "⛄️"
+            case 1.0..<8.0:
+                temperatureSmiley = "🥶"
+            case 8.0..<14.0:
+                temperatureSmiley = "🧤"
+            case 14.0..<20.0:
+                temperatureSmiley = "😎"
+            case 20.0...28.0:
+                temperatureSmiley = "☀️"
+            case _ where temperature > 28.0:
+                temperatureSmiley = "🔥"
+            default:
+                temperatureSmiley = "🤷‍♂️"
+            }
+        }
+    }
         
     private enum CacheState {
         case downloading
@@ -67,7 +88,6 @@ class WeatherViewModel: ObservableObject {
                 switch response {
                 case .success(let model):
                     cache[location.description()] = .cached(model)
-                    state = .hasData
                     currentWeather = model
                     print("Downloaded weather data for: " + location.description())
                     print(model.currentWeather)

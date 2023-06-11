@@ -10,23 +10,18 @@ import SwiftUI
 struct CurrentWeatherView: View {
     
     @ObservedObject var viewModel: WeatherViewModel
-    
+
     var body: some View {
         
-        if viewModel.state == .hasData {
-            VStack {
-                Image(systemName: "globe")
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                
-                if let weather = viewModel.currentWeather {
-                    Text("\(weather.currentWeather.temperature)")
-                }
-            }
-            .padding()
-        } else {
-            Text("Loading weather data ...")
+        VStack(spacing: 16.0) {
+            Text(viewModel.temperatureSmiley)
+                .font(.system(size: 72.0))
+            
+            Text(viewModel.temperatureText)
+                .font(.system(size: 48.0, weight: .medium))
         }
+        .padding(32.0)
+        .animation(.easeInOut(duration: 1.0), value: viewModel.temperatureText)
     }
 }
 
