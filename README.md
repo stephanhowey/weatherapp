@@ -1,9 +1,8 @@
 # weatherapp
 
-- SwiftUI based app
-- Swift concurrent networking, generic to any Decodable response
-- Combine based publishing Timer
-- @Published + ObservableObject to update UI
+- SwiftUI based app, MVVM
+- Swift concurrent, generic networking
+- Combine based publishing Timer and UI updates
 - Unit tests
 
 Improvements:
