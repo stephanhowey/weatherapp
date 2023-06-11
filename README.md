@@ -1,5 +1,7 @@
 # weatherapp
 
+XCode 14.3.1 compatible.
+
 - SwiftUI based app, MVVM
 - Swift concurrent, generic networking
 - Combine based publishing Timer and UI updates
